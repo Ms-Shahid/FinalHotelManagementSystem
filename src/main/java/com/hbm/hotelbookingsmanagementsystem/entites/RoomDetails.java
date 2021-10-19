@@ -1,10 +1,13 @@
 package com.hbm.hotelbookingsmanagementsystem.entites;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -15,7 +18,8 @@ public class RoomDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer room_id;
-	@Column
+	
+	@Column(unique=true)
 	@Min(value = 1)
 	@NotNull(message = "Enter valid hotel_id")
 	private Integer hotel_id;
@@ -34,10 +38,13 @@ public class RoomDetails {
 
 	private Boolean isAvailable;
 
-	// @ManyToOne(cascade=CascadeType.ALL)
-	// @JoinColumn(name="un_fk",referencedColumnName="hotel_id")
-	// private RoomDetails roomDetails;
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="hotel",referencedColumnName="hotel_id")
+	private RoomDetails roomDetails;
 
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="booking",referencedColumnName = "booking_id")
+	private BookingDetails bookingDetails;
 	public RoomDetails() {
 
 	}

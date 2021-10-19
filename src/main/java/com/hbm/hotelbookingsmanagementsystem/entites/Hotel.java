@@ -1,21 +1,30 @@
 package com.hbm.hotelbookingsmanagementsystem.entites;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Hotel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer hid;
+	private Integer hotel_id;
 
 	@Column
 	@NotEmpty(message = "Hotel City is Required")
@@ -55,31 +64,66 @@ public class Hotel {
 	@NotEmpty(message = "Hotel Website is Required")
 	private String website;
 
+	@JsonIgnore()
+	@OneToMany(mappedBy="hotel_id", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	private List<RoomDetails> roomDetails = new ArrayList<>();
+	
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name="booking_id", referencedColumnName = "booking_id")
+	private BookingDetails bookingDetails;
+	
+	
+	
+	public BookingDetails getBookingDetails() {
+		return bookingDetails;
+	}
+
+	public void setBookingDetails(BookingDetails bookingDetails) {
+		this.bookingDetails = bookingDetails;
+	}
+
 	public Hotel() {
 
 	}
 
-	public Hotel(Integer hid, String city, String hname, String adrress, String discription, Double avg_rate_per_day,
-			@Email @NotEmpty(message = "Hotel Email is Required") String email, String phone1, String phone2,
-			String website) {
-		this.hid = hid;
+	public Hotel(Integer hotel_id, String city, String hname, String adrress, String discription, Double avg_rate_per_day,
+			 String email, String phone1, String phone2,
+			String website, BookingDetails bookingDetails) {
+		this.hotel_id = hotel_id;
 		this.city = city;
 		this.hname = hname;
 		this.adrress = adrress;
 		this.discription = discription;
 		this.avg_rate_per_day = avg_rate_per_day;
 		this.email = email;
+		this.bookingDetails = bookingDetails;
+		this.phone1 = phone1;
+		this.phone2 = phone2;
+		this.website = website;
+	}
+	
+	public Hotel(String city, String hname, String adrress, String discription, Double avg_rate_per_day,
+			 String email, String phone1, String phone2,
+			String website, BookingDetails bookingDetails) {
+		
+		this.city = city;
+		this.hname = hname;
+		this.adrress = adrress;
+		this.discription = discription;
+		this.avg_rate_per_day = avg_rate_per_day;
+		this.email = email;
+		this.bookingDetails = bookingDetails;
 		this.phone1 = phone1;
 		this.phone2 = phone2;
 		this.website = website;
 	}
 
 	public Integer getHid() {
-		return hid;
+		return hotel_id;
 	}
 
-	public void setHid(Integer hid) {
-		this.hid = hid;
+	public void setHid(Integer hotel_id) {
+		this.hotel_id = hotel_id;
 	}
 
 	public String getCity() {

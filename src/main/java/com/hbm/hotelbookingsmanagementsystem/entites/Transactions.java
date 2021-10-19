@@ -3,6 +3,7 @@ package com.hbm.hotelbookingsmanagementsystem.entites;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,25 +25,21 @@ public class Transactions {
 	@NotNull(message = "Please enter the amount")
 	private Double amount;
 
-	@OneToOne(cascade=CascadeType.ALL)
-	 @JoinColumn(name="payment_id")
- private Payments payment;
+	@OneToOne
+	@JoinColumn(name="payment", referencedColumnName = "payment_id")
+	private Payments payment;
 
 	public Transactions() {
 
 	}
 
 	public Transactions(Integer transaction_id, Double amount, Payments payment) {
-
-		
 		this.transaction_id = transaction_id;
 		this.amount = amount;
 		this.payment = payment;
 	}
 
 	public Transactions(Double amount,Payments payment) {
-
-		
 		this.amount = amount;
 		this.payment = payment;
 	}

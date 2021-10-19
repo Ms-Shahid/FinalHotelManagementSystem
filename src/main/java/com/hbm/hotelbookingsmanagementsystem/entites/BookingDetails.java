@@ -1,17 +1,23 @@
 package com.hbm.hotelbookingsmanagementsystem.entites;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class BookingDetails {
@@ -56,15 +62,51 @@ public class BookingDetails {
 	@NotNull(message = "Please provide booking amount")
 	private Double amount;
 	
-	@OneToOne(cascade = CascadeType.ALL,mappedBy = "BookingDetails")
+	@OneToOne(cascade = CascadeType.ALL,mappedBy = "bookingDetails")
 	private User user;
+	
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "bookingDetails")
+	private List<Payments> payments = new ArrayList<>();
+	
+	public List<Payments> getPayments() {
+		return payments;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, 
+			mappedBy = "bookingDetails")
+	@JsonIgnore
+	private List<RoomDetails> roomDetails = new ArrayList<>();
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,
+			mappedBy = "bookingDetails")
+	private Hotel hotel;
+	
+	public Hotel getHotel() {
+		return hotel;
+	}
+
+	public void setHotel(Hotel hotel) {
+		this.hotel = hotel;
+	}
+
+	public List<RoomDetails> getRoomDetails() {
+		return roomDetails;
+	}
+
+	public void setRoomDetails(List<RoomDetails> roomDetails) {
+		this.roomDetails = roomDetails;
+	}
+
+	public void setPayments(List<Payments> payments) {
+		this.payments = payments;
+	}
 
 	public BookingDetails() {
-
+		
 	}
 
 	public BookingDetails(Integer booking_id, Integer hotel_id, Integer room_id, Integer user_id, Date booked_from,
-			Date booked_to, Integer no_of_adults, Integer no_of_children, Double amount,User user) {
+			Date booked_to, Integer no_of_adults, Integer no_of_children, Double amount) {
 		this.booking_id = booking_id;
 		this.hotel_id = hotel_id;
 		this.room_id = room_id;
@@ -74,12 +116,12 @@ public class BookingDetails {
 		this.no_of_adults = no_of_adults;
 		this.no_of_children = no_of_children;
 		this.amount = amount;
-		this.user = user;
+		
 	}
-
+ 
 	
 	public BookingDetails( Integer hotel_id,Integer room_id,Integer user_id,Date booked_from,
-		     Date booked_to,Integer no_of_adults,Integer no_of_children,Double amount, User user) {
+		     Date booked_to,Integer no_of_adults,Integer no_of_children,Double amount) {
 	
 		this.hotel_id = hotel_id;
 		this.room_id = room_id;
@@ -88,10 +130,8 @@ public class BookingDetails {
 		this.booked_to = booked_to;
 		this.no_of_adults = no_of_adults;
 		this.no_of_children = no_of_children;
-		this.amount = amount;
-		this.user = user;
+		this.amount = amount;	
 	}
-
 	public Integer getBooking_id() {
 		return booking_id;
 	}

@@ -22,9 +22,9 @@ public class HotelServiceImpl implements IHotelService {
 	}
 
 	@Override
-	public Hotel updateHotel(Hotel hotel, Integer hid) {
+	public Hotel updateHotel(Hotel hotel, Integer hotel_id) {
 
-		Optional<Hotel> existingHotel = hotelRepository.findById(hid);
+		Optional<Hotel> existingHotel = hotelRepository.findById(hotel_id);
 		if (existingHotel.isPresent()) {
 			Hotel hotel1 = existingHotel.get();
 			hotel1.setCity(hotel.getCity());
@@ -43,16 +43,16 @@ public class HotelServiceImpl implements IHotelService {
 	}
 
 	@Override
-	public void deleteHotel(Integer hid) {
-		Hotel hotel = showHotel(hid);
+	public void deleteHotel(Integer hotel_id) {
+		Hotel hotel = showHotel(hotel_id);
 		hotelRepository.deleteById(hotel.getHid());
 
 	}
 
 	@Override
-	public Hotel showHotel(Integer hid) {
-		return hotelRepository.findById(hid)
-				.orElseThrow(() -> new HotelNotFoundException("Hotel with Id " + hid + " not found"));
+	public Hotel showHotel(Integer hotel_id) {
+		return hotelRepository.findById(hotel_id)
+				.orElseThrow(() -> new HotelNotFoundException("Hotel with Id " + hotel_id + " not found"));
 	}
 
 	@Override

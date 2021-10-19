@@ -1,10 +1,15 @@
 package com.hbm.hotelbookingsmanagementsystem.entites;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
@@ -40,17 +45,28 @@ public class User {
 	@NotEmpty(message = "Address is Required")
 	private String address;
 
-	// @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-	// @JoinColumn(name = "booking_id")
-	// private BookingDetails bookingDetails;
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name="admin_id", referencedColumnName = "id")
+	private Admin admin;
+
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name="booking_id", referencedColumnName = "booking_id")
+	private BookingDetails bookingDetails;
+	
+	public Admin getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(Admin admin) {
+		this.admin = admin;
+	}
 
 	public User() {
 
 	}
 
 	public User(Integer user_id, String user_name, String email, String password, String role, String mobile,
-			String address)
-	// BookingDetails bookingDetails)
+			String address, BookingDetails bookingDetails)
 	{
 		this.user_id = user_id;
 		this.user_name = user_name;
@@ -59,11 +75,10 @@ public class User {
 		this.role = role;
 		this.mobile = mobile;
 		this.address = address;
-		// this.bookingDetails = bookingDetails;
+		this.bookingDetails = bookingDetails;
 	}
 
-	public User(String user_name, String email, String password, String role, String mobile, String address)
-	// BookingDetails bookingDetails)
+	public User(String user_name, String email, String password, String role, String mobile, String address,BookingDetails bookingDetails)
 	{
 		this.user_name = user_name;
 		this.email = email;
@@ -71,7 +86,7 @@ public class User {
 		this.role = role;
 		this.mobile = mobile;
 		this.address = address;
-		// this.bookingDetails = bookingDetails;
+		this.bookingDetails = bookingDetails;
 	}
 
 	public Integer getUser_id() {

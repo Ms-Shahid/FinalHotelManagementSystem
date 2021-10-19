@@ -30,16 +30,16 @@ public class HotelController {
 		return new ResponseEntity<Hotel>(hotelService.addHotel(hotel), HttpStatus.CREATED);
 	}
 
-	@PutMapping(value = "/{hid}")
-	public ResponseEntity<Hotel> updateHotel(@PathVariable Integer hid, @RequestBody Hotel hotel) {
-		Hotel updatedHotel = hotelService.updateHotel(hotel, hid);
+	@PutMapping(value = "/{hotel_id}")
+	public ResponseEntity<Hotel> updateHotel(@PathVariable Integer hotel_id, @RequestBody Hotel hotel) {
+		Hotel updatedHotel = hotelService.updateHotel(hotel, hotel_id);
 		return new ResponseEntity<Hotel>(updatedHotel, HttpStatus.CREATED);
 	}
 
-	@DeleteMapping(value = "/{hid}")
-	public ResponseEntity<String> removeHotel(@PathVariable Integer hid) {
-		hotelService.deleteHotel(hid);
-		String msg = "Hotel with Id " + hid + " Deleted Successfully";
+	@DeleteMapping(value = "/{hotel_id}")
+	public ResponseEntity<String> removeHotel(@PathVariable Integer hotel_id) {
+		hotelService.deleteHotel(hotel_id);
+		String msg = "Hotel with Id " + hotel_id + " Deleted Successfully";
 		return new ResponseEntity<String>(msg, HttpStatus.OK);
 	}
 
@@ -49,9 +49,9 @@ public class HotelController {
 		return new ResponseEntity<List<Hotel>>(allHotel, HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/{hid}")
-	public ResponseEntity<Hotel> getHotel(@PathVariable Integer hid) {
-		Hotel hotelById = hotelService.showHotel(hid);
+	@GetMapping(value = "/{hotel_id}")
+	public ResponseEntity<Hotel> getHotel(@PathVariable Integer hotel_id) {
+		Hotel hotelById = hotelService.showHotel(hotel_id);
 		return new ResponseEntity<Hotel>(hotelById, HttpStatus.OK);
 	}
 
